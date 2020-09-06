@@ -14,16 +14,16 @@ func isJobExpired(job *batchv1.Job, deleteSuccessfulAfter, deleteFailedAfter tim
 	}
 
 	timeSinceCompletion := time.Since(completionTime)
-	if isSuccessfulJob(job) {
-		if deleteSuccessfulAfter > 0 && timeSinceCompletion > deleteSuccessfulAfter {
-			return true
-		}
+	if isSuccessfulJob(job) &&
+		deleteSuccessfulAfter > 0 &&
+		timeSinceCompletion > deleteSuccessfulAfter {
+		return true
 	}
 
-	if isFailedJob(job) {
-		if deleteFailedAfter > 0 && timeSinceCompletion >= deleteFailedAfter {
-			return true
-		}
+	if isFailedJob(job) &&
+		deleteFailedAfter > 0 &&
+		timeSinceCompletion >= deleteFailedAfter {
+		return true
 	}
 
 	return true
