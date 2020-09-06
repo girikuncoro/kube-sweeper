@@ -74,6 +74,9 @@ func (s *Sweeper) Run() {
 }
 
 func (s *Sweeper) Process(job *batchv1.Job) {
+	if !isBeingDeleted(job) {
+		return
+	}
 	if !isJobExpired(job, s.deleteSuccessfulAfter, s.deleteFailedAfter) {
 		return
 	}
