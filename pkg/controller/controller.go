@@ -66,10 +66,26 @@ func NewSweeper(ctx context.Context, client *kubernetes.Clientset, namespace str
 	return sweeper
 }
 
+func (s *Sweeper) reconcile() {
+	ticker := time.NewTicker(2 * resyncPeriod)
+	for {
+		select {
+		case <-s.stopCh:
+			ticker.Stop()
+			return
+		case <-ticker.C:
+			for _, obj := range s.jobInformer.GetStore().List() {
+				s.Process(obj.(*batchv1.Job))
+			}
+		}
+	}
+}
+
 func (s *Sweeper) Run() {
 	log.Printf("Waiting for change events...")
 
 	go s.jobInformer.Run(s.stopCh)
+	go s.reconcile()
 	<-s.stopCh
 }
 
