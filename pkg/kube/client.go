@@ -10,7 +10,7 @@ type RESTClientGetter interface {
 	ToRESTConfig() (*rest.Config, error)
 }
 
-func NewClientSet(getter *rest.Config) (*kubernetes.Clientset, error) {
+func NewClientSet(getter RESTClientGetter) (*kubernetes.Clientset, error) {
 	conf, err := getter.ToRESTConfig()
 	if err != nil {
 		return nil, errors.Wrap(err, "unable to generate config for kubernetes client")
