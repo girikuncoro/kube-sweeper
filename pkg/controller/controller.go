@@ -7,6 +7,7 @@ import (
 	"time"
 
 	batchv1 "k8s.io/api/batch/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
@@ -54,9 +55,9 @@ func NewSweeper(ctx context.Context, client *kubernetes.Clientset, namespace str
 	)
 
 	jobInformer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-		UpdateFunc: func(oldJob, newJob interface{}) {
-			if !reflect.DeepEqual(oldJob, newJob) {
-				log.Printf("Cleaning up jobs: %v\n", newJob)
+		UpdateFunc: func(oldObj, newObj interface{}) {
+			if !reflect.DeepEqual(oldObj, newObj) {
+				sweeper.Process(newObj.(*batchv1.Job))
 			}
 		},
 	})
@@ -65,10 +66,28 @@ func NewSweeper(ctx context.Context, client *kubernetes.Clientset, namespace str
 	return sweeper
 }
 
-// Run listens for job/pod changes and handle accordingly.
 func (s *Sweeper) Run() {
 	log.Printf("Waiting for change events...")
 
 	go s.jobInformer.Run(s.stopCh)
 	<-s.stopCh
+}
+
+func (s *Sweeper) Process(job *batchv1.Job) {
+	if !isJobExpired(job, s.deleteSuccessfulAfter, s.deleteFailedAfter) {
+		return
+	}
+
+	log.Printf("Deleting job %q in namespace %q", job.Name, job.Namespace)
+	// Set cascading delete
+	propagationPolicy := metav1.DeletePropagationForeground
+	opts := metav1.DeleteOptions{
+		PropagationPolicy: &propagationPolicy,
+	}
+
+	err := s.client.BatchV1().Jobs(job.Namespace).Delete(s.ctx, job.Name, opts)
+	if err != nil && !apierrors.IsNotFound(err) {
+		log.Printf("Failed to delete job %q in namespace %q: %v", job.Name, job.Namespace, err)
+		return
+	}
 }
