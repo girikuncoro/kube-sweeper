@@ -1,11 +1,9 @@
 [![CI](https://github.com/girikuncoro/kube-sweeper/workflows/master/badge.svg)][ci]
 [![Go Report Card](https://goreportcard.com/badge/github.com/girikuncoro/kube-sweeper)][goreportcard]
-[![Code Climate](https://codeclimate.com/github/girikuncoro/kube-sweeper/badges/gpa.svg)][codeclimate]
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)][license]
 
 [ci]: https://github.com/girikuncoro/kube-sweeper/actions?query=master+branch%3Amaster
 [goreportcard]: https://goreportcard.com/report/github.com/girikuncoro/kube-sweeper
-[codeclimate]: https://codeclimate.com/github/girikuncoro/kube-sweeper
 [license]: https://opensource.org/licenses/Apache-2.0
 
 # Kube Sweeper
