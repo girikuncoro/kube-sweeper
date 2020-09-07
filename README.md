@@ -1,6 +1,6 @@
 # Kube Sweeper
 
-Kubernetes controller that listens to completed Jobs and Pods and automatically delete them after X seconds (default to 1 hour). This project is inspired from [kube-job-cleaner](https://github.com/hjacobs/kube-job-cleaner) and [kube-cleanup-operator](https://github.com/lwolf/kube-cleanup-operator).
+Kubernetes controller that listens to completed Jobs and Pods and automatically delete them after X seconds (default to 15 minutes). This project is inspired from [kube-job-cleaner](https://github.com/hjacobs/kube-job-cleaner) and [kube-cleanup-operator](https://github.com/lwolf/kube-cleanup-operator).
 
 Kubernetes Jobs are not cleaned up by default and completed Pods are never deleted. Jobs that are run frequently causing unnecessary Pod resources which significantly slowdown the Kubernetes API server. This controller listens and cleans up the completed Jobs/Pods, as well as perform periodic cleanup for existing resources.
 
