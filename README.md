@@ -1,3 +1,13 @@
+[![CI](https://github.com/girikuncoro/kube-sweeper/workflows/master/badge.svg)][ci]
+[![Go Report Card](https://goreportcard.com/badge/github.com/girikuncoro/kube-sweeper)][goreportcard]
+[![Code Climate](https://codeclimate.com/github/girikuncoro/kube-sweeper/badges/gpa.svg)][codeclimate]
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)][license]
+
+[ci]: https://github.com/girikuncoro/kube-sweeper/actions?query=master+branch%3Amaster
+[goreportcard]: https://goreportcard.com/report/github.com/girikuncoro/kube-sweeper
+[codeclimate]: https://codeclimate.com/github/girikuncoro/kube-sweeper
+[license]: https://opensource.org/licenses/Apache-2.0
+
 # Kube Sweeper
 
 Kubernetes controller that listens to completed Jobs and Pods and automatically delete them after X seconds (default to 15 minutes). This project is inspired from [kube-job-cleaner](https://github.com/hjacobs/kube-job-cleaner) and [kube-cleanup-operator](https://github.com/lwolf/kube-cleanup-operator).
