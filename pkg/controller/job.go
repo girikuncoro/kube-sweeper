@@ -26,7 +26,7 @@ func isJobExpired(job *batchv1.Job, deleteSuccessfulAfter, deleteFailedAfter tim
 		return true
 	}
 
-	return true
+	return false
 }
 
 func getJobCompletionTime(job *batchv1.Job) time.Time {

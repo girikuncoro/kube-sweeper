@@ -30,38 +30,36 @@ func TestDeleteJob(t *testing.T) {
 		failed     time.Duration
 		expected   bool
 	}{
-		// TODO: negative cases have not passed yet
-		//
-		// "jobs with active pods should not be deleted": {
-		// 	job:        mockJob(ts.Add(-time.Minute), 1, 0, 0),
-		// 	successful: time.Second,
-		// 	failed:     time.Second,
-		// 	expected:   false,
-		// },
+		"jobs with active pods should not be deleted": {
+			job:        mockJob(ts.Add(-time.Minute), 1, 0, 0),
+			successful: time.Second,
+			failed:     time.Second,
+			expected:   false,
+		},
 		"expired successful jobs should be deleted": {
 			job:        mockJob(ts.Add(-time.Minute), 0, 1, 0),
 			successful: time.Second,
 			failed:     time.Second,
 			expected:   true,
 		},
-		// "non-expired successful jobs should not be deleted": {
-		// 	job:        mockJob(ts.Add(-time.Minute), 0, 1, 0),
-		// 	successful: 5 * time.Minute,
-		// 	failed:     time.Second,
-		// 	expected:   false,
-		// },
+		"non-expired successful jobs should not be deleted": {
+			job:        mockJob(ts.Add(-time.Minute), 0, 1, 0),
+			successful: 5 * time.Minute,
+			failed:     time.Second,
+			expected:   false,
+		},
 		"expired failed jobs should be deleted": {
 			job:        mockJob(ts.Add(-time.Minute), 0, 0, 1),
 			successful: time.Second,
 			failed:     time.Second,
 			expected:   true,
 		},
-		// "non-expired failed jobs should not be deleted": {
-		// 	job:        mockJob(ts.Add(-time.Minute), 0, 0, 1),
-		// 	successful: 5 * time.Minute,
-		// 	failed:     time.Second,
-		// 	expected:   false,
-		// },
+		"non-expired failed jobs should not be deleted": {
+			job:        mockJob(ts.Add(-time.Minute), 0, 0, 1),
+			successful: time.Second,
+			failed:     5 * time.Minute,
+			expected:   false,
+		},
 	}
 	for name, tc := range testcases {
 		t.Run(name, func(t *testing.T) {
