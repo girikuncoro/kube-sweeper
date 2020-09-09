@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubesweeper
+  labels:
+    run: kubesweeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: kubesweeper
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: kubesweeper
+    spec:
+      containers:
+      - image: girikuncoro/kubesweeper:0.1.0
+        imagePullPolicy: Always
+        name: kubesweeper
+      restartPolicy: Always
