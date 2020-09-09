@@ -18,6 +18,7 @@ spec:
       labels:
         run: kubesweeper
     spec:
+      serviceAccountName: kubesweeper
       containers:
       - image: girikuncoro/kubesweeper:0.1.0
         imagePullPolicy: Always
